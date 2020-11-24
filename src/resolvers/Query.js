@@ -1,6 +1,6 @@
 const Query = {
   users: (parent, args, { db, prisma }, info) => {
-    prisma.query.users(null, info);
+    return prisma.query.users(null, info);
 
     // if (!args.query) {
     //   return db.users;
