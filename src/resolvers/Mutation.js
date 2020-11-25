@@ -8,9 +8,7 @@ const Mutation = {
       throw new Error('Email Taken');
     }
 
-    const user = await prisma.mutation.createUser({ data: args.data }, info);
-
-    return user;
+    return prisma.mutation.createUser({ data: args.data }, info);
   },
   deleteUser: (parent, args, { db }, info) => {
     const userIndex = db.users.findIndex((user) => user.id === args.id);
