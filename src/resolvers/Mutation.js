@@ -1,20 +1,29 @@
 import { v4 as uuidv4 } from 'uuid';
 
 const Mutation = {
-  createUser: (parent, args, { db }, info) => {
-    const emailTaken = db.users.some((user) => user.email === args.data.email);
+  createUser: async (parent, args, { prisma }, info) => {
+    const emailTaken = await prisma.exists.User({ email: args.data.email });
 
     if (emailTaken) {
+      create;
       throw new Error('Email Taken');
     }
 
-    const user = {
-      id: uuidv4(),
-      ...args.data,
-    };
+    const user = await prisma.mutation.createUser({ data: args.data });
 
-    db.users.push(user);
-    return user;
+    // const emailTaken = db.users.some((user) => user.email === args.data.email);
+
+    // if (emailTaken) {
+    //   throw new Error('Email Taken');
+    // }
+
+    // const user = {
+    //   id: uuidv4(),
+    //   ...args.data,
+    // };
+
+    // db.users.push(user);
+    // return user;
   },
   deleteUser: (parent, args, { db }, info) => {
     const userIndex = db.users.findIndex((user) => user.id === args.id);
