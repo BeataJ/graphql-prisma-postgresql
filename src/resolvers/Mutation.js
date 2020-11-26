@@ -26,33 +26,43 @@ const Mutation = {
       info
     );
   },
-  updateUser: (parent, args, { db }, info) => {
-    const { id, data } = args;
-    const user = db.users.find((user) => user.id === id);
+  updateUser: async (parent, args, { prisma }, info) => {
+    return prisma.mutation.updateUser(
+      {
+        where: {
+          id: args.id,
+        },
+        data: args.data,
+      },
+      info
+    );
 
-    if (!user) {
-      throw new Error('User not found');
-    }
+    // const { id, data } = args;
+    // const user = db.users.find((user) => user.id === id);
 
-    if (typeof data.email === 'string') {
-      const emailTaken = db.users.some((user) => user.email === data.email);
+    // if (!user) {
+    //   throw new Error('User not found');
+    // }
 
-      if (emailTaken) {
-        throw new Error('Email taken');
-      }
+    // if (typeof data.email === 'string') {
+    //   const emailTaken = db.users.some((user) => user.email === data.email);
 
-      user.email = data.email;
-    }
+    //   if (emailTaken) {
+    //     throw new Error('Email taken');
+    //   }
 
-    if (typeof data.name === 'string') {
-      user.name = data.name;
-    }
+    //   user.email = data.email;
+    // }
 
-    if (typeof data.age !== 'undefine') {
-      user.age = data.age;
-    }
+    // if (typeof data.name === 'string') {
+    //   user.name = data.name;
+    // }
 
-    return user;
+    // if (typeof data.age !== 'undefine') {
+    //   user.age = data.age;
+    // }
+
+    // return user;
   },
   createPost: (parent, args, { db, pubsub }, info) => {
     const userExist = db.users.some((user) => user.id === args.data.author);
