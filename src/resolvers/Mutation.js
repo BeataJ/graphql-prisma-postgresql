@@ -2,21 +2,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
-    const emailTaken = await prisma.exists.User({ email: args.data.email });
-
-    if (emailTaken) {
-      throw new Error('Email Taken');
-    }
-
     return prisma.mutation.createUser({ data: args.data }, info);
   },
   deleteUser: async (parent, args, { prisma }, info) => {
-    const userExists = await prisma.exists.User({ id: args.id });
-
-    if (!userExists) {
-      throw new Error('User not find');
-    }
-
     return prisma.mutation.deleteUser(
       {
         where: {
@@ -36,33 +24,6 @@ const Mutation = {
       },
       info
     );
-
-    // const { id, data } = args;
-    // const user = db.users.find((user) => user.id === id);
-
-    // if (!user) {
-    //   throw new Error('User not found');
-    // }
-
-    // if (typeof data.email === 'string') {
-    //   const emailTaken = db.users.some((user) => user.email === data.email);
-
-    //   if (emailTaken) {
-    //     throw new Error('Email taken');
-    //   }
-
-    //   user.email = data.email;
-    // }
-
-    // if (typeof data.name === 'string') {
-    //   user.name = data.name;
-    // }
-
-    // if (typeof data.age !== 'undefine') {
-    //   user.age = data.age;
-    // }
-
-    // return user;
   },
   createPost: (parent, args, { db, pubsub }, info) => {
     const userExist = db.users.some((user) => user.id === args.data.author);
