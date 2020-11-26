@@ -83,24 +83,15 @@ const Mutation = {
       info
     );
   },
-  deleteComment: (parent, args, { db, pubsub }, info) => {
-    const commentIndex = db.comments.findIndex(
-      (comment) => comment.id === args.id
-    );
-
-    if (commentIndex === -1) {
-      throw new Error('Comment not found');
-    }
-
-    const [deleteComment] = db.comments.splice(commentIndex, 1);
-    pubsub.publish(`comment ${deleteComment.post}`, {
-      comment: {
-        mutation: 'DELETED',
-        data: deleteComment,
+  deleteComment: async (parent, args, { prisma }, info) => {
+    return prisma.mutation.deleteComment(
+      {
+        where: {
+          id: args.id,
+        },
       },
-    });
-
-    return deleteComment;
+      info
+    );
   },
   updateComment: (parent, args, { db, pubsub }, info) => {
     const { id, data } = args;
