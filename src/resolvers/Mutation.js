@@ -42,76 +42,58 @@ const Mutation = {
       info
     );
   },
-  deletePost: (parent, args, { db, pubsub }, info) => {
-    const postIndex = db.posts.findIndex((post) => post.id === args.id);
-
-    if (postIndex === -1) {
-      throw new Error('Post not found');
-    }
-
-    const [post] = db.posts.splice(postIndex, 1);
-
-    db.comments = db.comments.filter((comment) => comment.post !== args.id);
-
-    if (post.published) {
-      pubsub.publish('post', {
-        post: {
-          mutation: 'DELETED',
-          data: post,
+  deletePost: async (parent, args, { prisma }, info) => {
+    return prisma.mutation.deletePost(
+      {
+        where: {
+          id: args.id,
         },
-      });
-    }
-
-    return post;
+      },
+      info
+    );
   },
-  updatePost: (parent, args, { db, pubsub }, info) => {
-    const { id, data } = args;
-    const post = db.posts.find((post) => post.id === id);
-    const orginalPost = { ...post };
-
-    if (!post) {
-      throw new Error('Post not found');
-    }
-
-    if (typeof data.title === 'string') {
-      post.title = data.title;
-    }
-
-    if (typeof data.body === 'string') {
-      post.body = data.body;
-    }
-
-    if (typeof data.published === 'boolean') {
-      post.published = data.published;
-
-      if (orginalPost.published && !post.published) {
-        // delete
-        pubsub.publish('post', {
-          post: {
-            mutation: 'DELETED',
-            data: orginalPost,
-          },
-        });
-      } else if (!orginalPost.published && post.published) {
-        // create
-        pubsub.publish('post', {
-          post: {
-            mutation: 'CREATED',
-            data: post,
-          },
-        });
-      }
-    } else if (post.published) {
-      // update
-      pubsub.publish('post', {
-        post: {
-          mutation: 'UPDATED',
-          data: post,
-        },
-      });
-    }
-
-    return post;
+  updatePost: async (parent, args, { db, pubsub }, info) => {
+    // const { id, data } = args;
+    // const post = db.posts.find((post) => post.id === id);
+    // const orginalPost = { ...post };
+    // if (!post) {
+    //   throw new Error('Post not found');
+    // }
+    // if (typeof data.title === 'string') {
+    //   post.title = data.title;
+    // }
+    // if (typeof data.body === 'string') {
+    //   post.body = data.body;
+    // }
+    // if (typeof data.published === 'boolean') {
+    //   post.published = data.published;
+    //   if (orginalPost.published && !post.published) {
+    //     // delete
+    //     pubsub.publish('post', {
+    //       post: {
+    //         mutation: 'DELETED',
+    //         data: orginalPost,
+    //       },
+    //     });
+    //   } else if (!orginalPost.published && post.published) {
+    //     // create
+    //     pubsub.publish('post', {
+    //       post: {
+    //         mutation: 'CREATED',
+    //         data: post,
+    //       },
+    //     });
+    //   }
+    // } else if (post.published) {
+    //   // update
+    //   pubsub.publish('post', {
+    //     post: {
+    //       mutation: 'UPDATED',
+    //       data: post,
+    //     },
+    //   });
+    // }
+    // return post;
   },
   createComment: (parent, args, { db, pubsub }, info) => {
     const userExist = db.users.some((user) => user.id === args.data.author);
