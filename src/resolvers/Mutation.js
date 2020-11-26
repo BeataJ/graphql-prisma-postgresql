@@ -63,30 +63,25 @@ const Mutation = {
       info
     );
   },
-  createComment: (parent, args, { db, pubsub }, info) => {
-    const userExist = db.users.some((user) => user.id === args.data.author);
-    const postExistPublish = db.posts.some(
-      (post) => post.id === args.data.post && post.published
-    );
-
-    if (!userExist || !postExistPublish) {
-      throw new Error('User not exist or post not exist');
-    }
-
-    const comment = {
-      id: uuidv4(),
-      ...args.data,
-    };
-
-    db.comments.push(comment);
-    pubsub.publish(`comment ${args.data.post}`, {
-      comment: {
-        mutation: 'CREATED',
-        data: comment,
+  createComment: async (parent, args, { prisma }, info) => {
+    return prisma.mutation.createComment(
+      {
+        data: {
+          text: args.data.text,
+          author: {
+            connect: {
+              id: args.data.author,
+            },
+          },
+          post: {
+            connect: {
+              id: args.data.post,
+            },
+          },
+        },
       },
-    });
-
-    return comment;
+      info
+    );
   },
   deleteComment: (parent, args, { db, pubsub }, info) => {
     const commentIndex = db.comments.findIndex(
