@@ -1,3 +1,5 @@
+import bcryptjs from 'bcryptjs';
+
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
     if (args.data.password.length < 8) {
