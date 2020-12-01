@@ -7,6 +7,9 @@ console.log(token);
 const decode = jwt.decode(token);
 console.log(decode);
 
+const decode2 = jwt.verify(token, 'mysecret');
+console.log(decode2);
+
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
     if (args.data.password.length < 8) {
