@@ -1,14 +1,14 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const token = jwt.sign({ id: 46 }, 'mysecret');
-console.log(token);
+// const token = jwt.sign({ id: 46 }, 'mysecret');
+// console.log(token);
 
-const decode = jwt.decode(token);
-console.log(decode);
+// const decode = jwt.decode(token);
+// console.log(decode);
 
-const decode2 = jwt.verify(token, 'mysecret');
-console.log(decode2);
+// const decode2 = jwt.verify(token, 'mysecret');
+// console.log(decode2);
 
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
@@ -18,7 +18,7 @@ const Mutation = {
 
     const password = await bcryptjs.hash(args.data.password, 10);
 
-    return prisma.mutation.createUser(
+    const user = await prisma.mutation.createUser(
       {
         data: {
           ...args.data,
@@ -27,6 +27,11 @@ const Mutation = {
       },
       info
     );
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, 'thisisasecret'),
+    };
   },
   deleteUser: async (parent, args, { prisma }, info) => {
     return prisma.mutation.deleteUser(
