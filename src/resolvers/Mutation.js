@@ -1,4 +1,5 @@
 import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
