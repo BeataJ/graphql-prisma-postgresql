@@ -6,7 +6,7 @@ const Mutation = {
       throw new Error('Password must be 8 characters or longer.');
     }
 
-    const password = await bcrypt.hash(args.data.password, 10);
+    const password = await bcryptjs.hash(args.data.password, 10);
 
     return prisma.mutation.createUser(
       {
