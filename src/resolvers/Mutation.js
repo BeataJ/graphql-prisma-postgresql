@@ -1,6 +1,12 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+const token = jwt.sign({ id: 46 }, 'mysecret');
+console.log(token);
+
+const decode = jwt.decode(token);
+console.log(decode);
+
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
     if (args.data.password.length < 8) {
