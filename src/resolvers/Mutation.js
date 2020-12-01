@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
     if (args.data.password.length < 8) {
