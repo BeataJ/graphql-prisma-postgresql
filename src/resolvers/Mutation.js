@@ -34,10 +34,21 @@ const Mutation = {
     };
   },
   loginUser: async (parent, args, { prisma }, info) => {
-    // return prisma.mutation.loginUser({
-    //   data: {
-    //   }
-    // }, info)
+    const user = await prisma.query.user({
+      where: {
+        email: args.data.email,
+      },
+    });
+
+    if (!user) {
+      throw new Error('Unable to login');
+    }
+
+    const isMatch = bcryptjs.compare(args.data.password, user.password);
+
+    if (!isMatch) {
+      throw new Error('Unable to login');
+    }
   },
   deleteUser: async (parent, args, { prisma }, info) => {
     return prisma.mutation.deleteUser(
