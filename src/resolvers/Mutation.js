@@ -54,11 +54,13 @@ const Mutation = {
       info
     );
   },
-  updateUser: async (parent, args, { prisma }, info) => {
+  updateUser: async (parent, args, { prisma, request }, info) => {
+    const userId = getUserId(request);
+
     return prisma.mutation.updateUser(
       {
         where: {
-          id: args.id,
+          id: userId,
         },
         data: args.data,
       },
