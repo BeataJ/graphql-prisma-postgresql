@@ -44,11 +44,13 @@ const Mutation = {
       token: jwt.sign({ userId: user.id }, 'thisisasecret'),
     };
   },
-  deleteUser: async (parent, args, { prisma }, info) => {
+  deleteUser: async (parent, args, { prisma, request }, info) => {
+    const userId = getUserId(request);
+
     return prisma.mutation.deleteUser(
       {
         where: {
-          id: args.id,
+          id: userId,
         },
       },
       info
