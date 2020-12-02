@@ -7,7 +7,7 @@ const getUserId = (request) => {
     throw new Error('Authentitation required!');
   }
 
-  const token = header.replace('Bearer', '');
+  const token = header.replace('Bearer ', '');
   const decoded = jwt.verify(token, 'thisisasecret');
 
   return decoded.userId;
