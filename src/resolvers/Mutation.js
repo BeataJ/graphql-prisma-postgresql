@@ -76,7 +76,7 @@ const Mutation = {
           published: args.data.published,
           author: {
             connect: {
-              id: args.data.author,
+              id: userId,
             },
           },
         },
