@@ -21,7 +21,6 @@ const server = new GraphQLServer({
     Comment,
   },
   context: (request) => {
-    console.log(request);
     return {
       db,
       pubsub,
