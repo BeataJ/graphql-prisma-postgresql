@@ -1,17 +1,17 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const dummy = async () => {
-  const email = 'beata@exaple.com';
-  const password = 'zaba12345678';
+// const dummy = async () => {
+//   const email = 'beata@exaple.com';
+//   const password = 'zaba12345678';
 
-  const hashedPassword =
-    '$2a$10$JdjFLtptZTZP2TS2UMPe8espx6Jr9D84xL2xmuqgPE6KJCbi5pn2K';
+//   const hashedPassword =
+//     '$2a$10$JdjFLtptZTZP2TS2UMPe8espx6Jr9D84xL2xmuqgPE6KJCbi5pn2K';
 
-  const isMatch = await bcryptjs.compare(password, hashedPassword);
-  console.log(isMatch);
-};
-dummy();
+//   const isMatch = await bcryptjs.compare(password, hashedPassword);
+//   console.log(isMatch);
+// };
+// dummy();
 
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
@@ -44,11 +44,16 @@ const Mutation = {
       throw new Error('Unable to login');
     }
 
-    const isMatch = bcryptjs.compare(args.data.password, user.password);
+    const isMatch = await bcryptjs.compare(args.data.password, user.password);
 
     if (!isMatch) {
       throw new Error('Unable to login');
     }
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, 'thisisasecret'),
+    };
   },
   deleteUser: async (parent, args, { prisma }, info) => {
     return prisma.mutation.deleteUser(
