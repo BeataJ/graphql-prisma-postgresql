@@ -1,18 +1,6 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-// const dummy = async () => {
-//   const email = 'beata@exaple.com';
-//   const password = 'zaba12345678';
-
-//   const hashedPassword =
-//     '$2a$10$JdjFLtptZTZP2TS2UMPe8espx6Jr9D84xL2xmuqgPE6KJCbi5pn2K';
-
-//   const isMatch = await bcryptjs.compare(password, hashedPassword);
-//   console.log(isMatch);
-// };
-// dummy();
-
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
     if (args.data.password.length < 8) {
