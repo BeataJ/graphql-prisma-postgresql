@@ -1,3 +1,5 @@
+import getUserId from '../utils/getUserId';
+
 const Query = {
   users: (parent, args, { prisma }, info) => {
     const opArgs = {};
@@ -37,6 +39,34 @@ const Query = {
   },
   comments: (parent, args, { prisma }, info) => {
     return prisma.query.comments(null, info);
+  },
+  post: async (parent, args, { prisma, requrie }, info) => {
+    const urserId = getUserId(requrie, false);
+
+    const posts = await prisma.query.posts(
+      {
+        where: {
+          id: args.id,
+          OR: [
+            {
+              published: true,
+            },
+            {
+              author: {
+                id: urserId,
+              },
+            },
+          ],
+        },
+      },
+      info
+    );
+
+    if (posts.length === 0) {
+      throw new Error('Post not found');
+    }
+
+    return posts[0];
   },
 };
 
