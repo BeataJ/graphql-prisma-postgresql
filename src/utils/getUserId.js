@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const getUserId = (request) => {
+const getUserId = (request, requierAuth = true) => {
   const header = request.request.headers.authorization;
 
   if (!header) {
