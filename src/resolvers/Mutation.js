@@ -160,9 +160,7 @@ const Mutation = {
     const commentExists = await prisma.exists.Comment({
       id: args.id,
       author: {
-        connect: {
-          id: userId,
-        },
+        id: userId,
       },
     });
 
@@ -184,9 +182,7 @@ const Mutation = {
     const commentExists = await prisma.exists.Comment({
       id: args.id,
       author: {
-        connect: {
-          id: userId,
-        },
+        id: userId,
       },
     });
 
