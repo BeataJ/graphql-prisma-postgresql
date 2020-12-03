@@ -179,7 +179,21 @@ const Mutation = {
       info
     );
   },
-  updateComment: async (parent, args, { prisma }, info) => {
+  updateComment: async (parent, args, { prisma, request }, info) => {
+    const userId = getUserId(request);
+    const commentExists = await prisma.exists.Comment({
+      id: args.id,
+      author: {
+        connect: {
+          id: userId,
+        },
+      },
+    });
+
+    if (!commentExists) {
+      throw new Error('Unable to update comment');
+    }
+
     return prisma.mutation.updateComment(
       {
         where: {
