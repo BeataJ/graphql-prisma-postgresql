@@ -13,6 +13,8 @@ const getUserId = (request, requieAuth = true) => {
   if (requieAuth) {
     throw new Error('Authentitation required!');
   }
+
+  return null;
 };
 
 export { getUserId as default };
