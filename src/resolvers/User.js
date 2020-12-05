@@ -4,7 +4,11 @@ const User = {
   email: (parent, args, { request }, info) => {
     const userId = getUserId(request, false);
 
-    console.log(parent);
+    if (userId && userId === parent.id) {
+      return parent.email;
+    } else {
+      return null;
+    }
   },
 };
 
