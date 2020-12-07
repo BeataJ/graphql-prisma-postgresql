@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const generateToken = (userid) => {
+const generateToken = (userId) => {
   return jwt.sign({ userId }, 'thisisasecret', {
     expiresIn: '7 days',
   });
