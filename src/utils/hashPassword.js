@@ -8,4 +8,4 @@ const hashPassword = (password) => {
   return bcryptjs.hash(password, 10);
 };
 
-export { hashPassword as defalut };
+export { hashPassword as default };
