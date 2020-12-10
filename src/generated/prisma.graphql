@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Sun Nov 29 2020 21:51:29 GMT-0800 (Pacific Standard Time)
+# timestamp: Wed Dec 09 2020 18:00:16 GMT-0800 (Pacific Standard Time)
 
 type AggregateComment {
   count: Int!
@@ -386,6 +386,8 @@ input CommentWhereInput {
 input CommentWhereUniqueInput {
   id: ID
 }
+
+scalar DateTime
 
 """Raw JSON value"""
 scalar Json
@@ -952,6 +954,8 @@ type User implements Node {
   password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  updateAt: DateTime!
+  createAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -969,6 +973,8 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
+  updateAt: DateTime!
+  createAt: DateTime!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
 }
@@ -988,6 +994,8 @@ input UserCreateWithoutCommentsInput {
   name: String!
   email: String!
   password: String!
+  updateAt: DateTime!
+  createAt: DateTime!
   posts: PostCreateManyWithoutAuthorInput
 }
 
@@ -996,6 +1004,8 @@ input UserCreateWithoutPostsInput {
   name: String!
   email: String!
   password: String!
+  updateAt: DateTime!
+  createAt: DateTime!
   comments: CommentCreateManyWithoutAuthorInput
 }
 
@@ -1017,6 +1027,10 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
+  updateAt_ASC
+  updateAt_DESC
+  createAt_ASC
+  createAt_DESC
 }
 
 type UserPreviousValues {
@@ -1024,6 +1038,8 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
+  updateAt: DateTime!
+  createAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -1069,6 +1085,8 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  updateAt: DateTime
+  createAt: DateTime
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
 }
@@ -1077,6 +1095,8 @@ input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
+  updateAt: DateTime
+  createAt: DateTime
 }
 
 input UserUpdateOneRequiredWithoutCommentsInput {
@@ -1097,6 +1117,8 @@ input UserUpdateWithoutCommentsDataInput {
   name: String
   email: String
   password: String
+  updateAt: DateTime
+  createAt: DateTime
   posts: PostUpdateManyWithoutAuthorInput
 }
 
@@ -1104,6 +1126,8 @@ input UserUpdateWithoutPostsDataInput {
   name: String
   email: String
   password: String
+  updateAt: DateTime
+  createAt: DateTime
   comments: CommentUpdateManyWithoutAuthorInput
 }
 
@@ -1286,6 +1310,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
+  updateAt: DateTime
+
+  """All values that are not equal to given value."""
+  updateAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updateAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updateAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updateAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updateAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updateAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updateAt_gte: DateTime
+  createAt: DateTime
+
+  """All values that are not equal to given value."""
+  createAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createAt_gte: DateTime
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
