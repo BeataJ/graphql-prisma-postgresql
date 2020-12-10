@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Wed Dec 09 2020 18:00:16 GMT-0800 (Pacific Standard Time)
+# timestamp: Wed Dec 09 2020 18:50:47 GMT-0800 (Pacific Standard Time)
 
 type AggregateComment {
   count: Int!
@@ -954,8 +954,8 @@ type User implements Node {
   password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
-  updateAt: DateTime!
-  createAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -973,8 +973,6 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
-  updateAt: DateTime!
-  createAt: DateTime!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
 }
@@ -994,8 +992,6 @@ input UserCreateWithoutCommentsInput {
   name: String!
   email: String!
   password: String!
-  updateAt: DateTime!
-  createAt: DateTime!
   posts: PostCreateManyWithoutAuthorInput
 }
 
@@ -1004,8 +1000,6 @@ input UserCreateWithoutPostsInput {
   name: String!
   email: String!
   password: String!
-  updateAt: DateTime!
-  createAt: DateTime!
   comments: CommentCreateManyWithoutAuthorInput
 }
 
@@ -1027,10 +1021,10 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
-  updateAt_ASC
-  updateAt_DESC
-  createAt_ASC
-  createAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -1038,8 +1032,8 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
-  updateAt: DateTime!
-  createAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -1085,8 +1079,6 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  updateAt: DateTime
-  createAt: DateTime
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
 }
@@ -1095,8 +1087,6 @@ input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
-  updateAt: DateTime
-  createAt: DateTime
 }
 
 input UserUpdateOneRequiredWithoutCommentsInput {
@@ -1117,8 +1107,6 @@ input UserUpdateWithoutCommentsDataInput {
   name: String
   email: String
   password: String
-  updateAt: DateTime
-  createAt: DateTime
   posts: PostUpdateManyWithoutAuthorInput
 }
 
@@ -1126,8 +1114,6 @@ input UserUpdateWithoutPostsDataInput {
   name: String
   email: String
   password: String
-  updateAt: DateTime
-  createAt: DateTime
   comments: CommentUpdateManyWithoutAuthorInput
 }
 
@@ -1310,50 +1296,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
-  updateAt: DateTime
+  createdAt: DateTime
 
   """All values that are not equal to given value."""
-  updateAt_not: DateTime
+  createdAt_not: DateTime
 
   """All values that are contained in given list."""
-  updateAt_in: [DateTime!]
+  createdAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  updateAt_not_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  updateAt_lt: DateTime
+  createdAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  updateAt_lte: DateTime
+  createdAt_lte: DateTime
 
   """All values greater than the given value."""
-  updateAt_gt: DateTime
+  createdAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  updateAt_gte: DateTime
-  createAt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
 
   """All values that are not equal to given value."""
-  createAt_not: DateTime
+  updatedAt_not: DateTime
 
   """All values that are contained in given list."""
-  createAt_in: [DateTime!]
+  updatedAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  createAt_not_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  createAt_lt: DateTime
+  updatedAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  createAt_lte: DateTime
+  updatedAt_lte: DateTime
 
   """All values greater than the given value."""
-  createAt_gt: DateTime
+  updatedAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  createAt_gte: DateTime
+  updatedAt_gte: DateTime
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
