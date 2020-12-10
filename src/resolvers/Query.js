@@ -76,7 +76,7 @@ const Query = {
       skip: args.skip,
       after: args.after,
     };
-    return prisma.query.comments(null, info);
+    return prisma.query.comments(opArgs, info);
   },
   me: async (parent, args, { prisma, request }, info) => {
     const userId = getUserId(request);
