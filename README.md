@@ -7,4 +7,4 @@
 
 ### environments
 
-1. Deploy Prisma: prisma deploy -e ../config/dev(or prod)
+1. Deploy Prisma: prisma deploy -e ../config/dev.env(or prod.env)
