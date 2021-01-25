@@ -21,6 +21,7 @@
     "@babel/plugin-transform-arrow-functions": "^7.10.4",
     "@babel/preset-env": "^7.11.5",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "jest": "^23.5.0",
     "nodemon": "^2.0.5"
   },
   "dependencies": {
