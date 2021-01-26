@@ -17,3 +17,9 @@ test('Should reject password shorter than 8 character', () => {
 
   expect(shorterPassword).toBe(true);
 });
+
+test('Should reject password that contains word password', () => {
+  const rejectPassword = isValidPassword('password');
+
+  expect(rejectPassword).toBe(false);
+});
