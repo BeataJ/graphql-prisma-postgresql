@@ -2,4 +2,8 @@ const getFirstName = (fullName) => {
   return fullName.split(' ')[0];
 };
 
-module.exports = getFirstName;
+const isValidPassword = (password) => {
+  return password.length >= 8 && !password.toLowerCase().includes('password');
+};
+
+module.exports = { getFirstName, isValidPassword };
