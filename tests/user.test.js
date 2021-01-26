@@ -4,8 +4,10 @@ test('Should return first name when given full name', () => {
   const firstName = getFirstName('Beata Jasinska');
 
   expect(firstName).toBe('Beata');
+});
 
-  // if (firstName !== 'Beata') {
-  //   throw new Error('Expected the string  Beata');
-  // }
+test('Should return first name when given first name', () => {
+  const firstName = getFirstName('beata');
+
+  expect(firstName).toBe('beata');
 });
