@@ -1,5 +1,5 @@
 const getFirstName = (fullName) => {
-  return fullName.splid(' ')[0];
+  return fullName.split(' ')[0];
 };
 
-export { getFirstName };
+module.exports = getFirstName;

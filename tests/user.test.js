@@ -1,5 +1,9 @@
-test('This is my first case', () => {
-  1 + 2;
-});
+const getFirstName = require('../src/utils/user');
 
-test('second test case', () => {});
+test('Should return first name when given full name', () => {
+  const firstName = getFirstName('Beata Jasinska');
+
+  if (firstName !== 'Beata') {
+    throw new Error('Expected the string  Beata');
+  }
+});
