@@ -13,13 +13,19 @@ test('Should return first name when given first name', () => {
 });
 
 test('Should reject password shorter than 8 character', () => {
-  const shorterPassword = isValidPassword('123456789');
+  const shorterPassword = isValidPassword('1234567');
 
-  expect(shorterPassword).toBe(true);
+  expect(shorterPassword).toBe(false);
 });
 
 test('Should reject password that contains word password', () => {
   const rejectPassword = isValidPassword('password');
 
   expect(rejectPassword).toBe(false);
+});
+
+test('Should correctly validate a valid password', () => {
+  const isValid = isValidPassword('Test123456!');
+
+  expect(isValid).toBe(true);
 });
