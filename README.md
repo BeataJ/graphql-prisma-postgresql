@@ -8,3 +8,8 @@
 ### environments
 
 1. Deploy Prisma: prisma deploy -e ../config/dev.env(or prod.env)
+
+# localhost:4000
+
+1. graphgl-prisma-postgresql-localhost
+   npm run dev
