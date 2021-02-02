@@ -1,1 +1,3 @@
-module.exports = async () => {};
+module.exports = async () => {
+  await global.httpServer.close();
+};
