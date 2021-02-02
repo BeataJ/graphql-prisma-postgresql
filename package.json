@@ -10,7 +10,10 @@
     "test": "jest",
     "get-schema": "graphql get-schema -p prisma --dotenv config/dev.env"
   },
-  "jest": {},
+  "jest": {
+    "globalSetup": "./tests/jest/globalSetup.js",
+    "globalTeardown": "./tests/jest/globalTeardown.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
