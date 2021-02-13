@@ -1,31 +1,132 @@
-const { getFirstName, isValidPassword } = require('../src/utils/user');
+import 'cross-fetch/polyfill';
+import ApolloBoost, { gql } from 'apollo-boost';
+import bcrypt from 'bcryptjs';
+import prisma from '../src/prisma';
 
-test('Should return first name when given full name', () => {
-  const firstName = getFirstName('Beata Jasinska');
-
-  expect(firstName).toBe('Beata');
+const client = new ApolloBoost({
+  uri: 'http://localhost:4000',
 });
 
-test('Should return first name when given first name', () => {
-  const firstName = getFirstName('beata');
-
-  expect(firstName).toBe('beata');
+beforeEach(async () => {
+  await prisma.mutation.deleteManyPosts();
+  await prisma.mutation.deleteManyUsers();
+  const user = await prisma.mutation.createUser({
+    data: {
+      name: 'Jen',
+      email: 'jen@example.com',
+      password: bcrypt.hashSync('Red098!@#$'),
+    },
+  });
+  await prisma.mutation.createPost({
+    data: {
+      title: 'My published post',
+      body: '',
+      published: true,
+      author: {
+        connect: {
+          id: user.id,
+        },
+      },
+    },
+  });
+  await prisma.mutation.createPost({
+    data: {
+      title: 'My draft post',
+      body: '',
+      published: false,
+      author: {
+        connect: {
+          id: user.id,
+        },
+      },
+    },
+  });
 });
 
-test('Should reject password shorter than 8 character', () => {
-  const shorterPassword = isValidPassword('1234567');
+test('Should create a new user', async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        data: {
+          name: "Andrew"
+          email: "andrew@example.com"
+          password: "MyPass123"
+        }
+      ) {
+        token
+        user {
+          id
+        }
+      }
+    }
+  `;
 
-  expect(shorterPassword).toBe(false);
+  const response = await client.mutate({
+    mutation: createUser,
+  });
+
+  const exists = await prisma.exists.User({
+    id: response.data.createUser.user.id,
+  });
+  expect(exists).toBe(true);
 });
 
-test('Should reject password that contains word password', () => {
-  const rejectPassword = isValidPassword('password');
+test('Should expose public author profiles', async () => {
+  const getUsers = gql`
+    query {
+      users {
+        id
+        name
+        email
+      }
+    }
+  `;
+  const response = await client.query({ query: getUsers });
 
-  expect(rejectPassword).toBe(false);
+  expect(response.data.users.length).toBe(1);
+  expect(response.data.users[0].email).toBe(null);
+  expect(response.data.users[0].name).toBe('Jen');
 });
 
-test('Should correctly validate a valid password', () => {
-  const isValid = isValidPassword('Test123456!');
+test('Should expose published posts', async () => {
+  const getPosts = gql`
+    query {
+      posts {
+        id
+        title
+        body
+        published
+      }
+    }
+  `;
+  const response = await client.query({ query: getPosts });
 
-  expect(isValid).toBe(true);
+  expect(response.data.posts.length).toBe(1);
+  expect(response.data.posts[0].published).toBe(true);
+});
+
+test('Should not login with bad credentials', async () => {
+  const login = gql`
+    mutation {
+      login(data: { email: "jen@example.com", password: "red098!@#$" }) {
+        token
+      }
+    }
+  `;
+
+  await expect(client.mutate({ mutation: login })).rejects.toThrow();
+});
+
+test('Should not signup user with invalid password', async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        data: { name: "Andrew", email: "andrew@example.com", password: "pass" }
+      ) {
+        token
+      }
+    }
+  `;
+
+  await expect(client.mutate({ mutation: createUser })).rejects.toThrow();
 });
